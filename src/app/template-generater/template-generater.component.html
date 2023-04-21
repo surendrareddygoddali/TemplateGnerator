@@ -1,0 +1,43 @@
+<div class="main-container">
+    <div class="container">
+        <h1>Create your template</h1>
+        <form (ngSubmit)="saveTheme()">
+            <div *ngIf="success" class="success-message">
+                Theme saved successfully!!
+            </div>
+            <div class="form-group">
+                <label for="text-field">Company Title</label>
+                <input type="text" id="text-field" name="text-field" [(ngModel)]="companyTitle">
+            </div>
+            <div class="form-group">
+                <label for="text-field">Page Heading</label>
+                <input type="text" id="text-field" name="text-field" [(ngModel)]="pageTitle">
+            </div>
+            <div class="form-group">
+                <label class="primaryColor" for="primaryColor">Primary Color</label>
+                <input type="color" id="primaryColor" name="primaryColor" [(ngModel)]="primaryColor">
+                <p>choosen color: {{ primaryColor }}</p>
+            </div>
+            <div class="form-group">
+                <label class="primaryColor" for="actionColor">Secondary Color</label>
+                <input type="color" id="actionColor" name="actionColor" [(ngModel)]="actionColor">
+                <p>choosen color: {{ actionColor }}</p>
+            </div>
+            <div class="form-group">
+                <label for="image-upload">Logo</label>
+                <input type="file" accept="image/*" #imageInput (change)="processFile(imageInput)">
+            </div>
+            <div class="form-group">
+                <label for="text-field">Template Name</label>
+                <input type="text" id="text-field" name="text-field" [(ngModel)]="templateName">
+            </div>
+            <div class="links">
+                <button class="btn" type="submit">Save</button>
+            </div>
+        </form>
+    </div>
+    <div class="container-preview">
+        <h1 style="text-align: left;">Preview</h1>
+        <app-preview [logoSrc]="imageSrc" [actionColor]="actionColor" [headerbackground]="primaryColor" [pageHeader]="pageTitle" [companyTitle]="companyTitle"></app-preview>
+    </div>
+</div>

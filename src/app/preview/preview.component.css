@@ -1,0 +1,81 @@
+/* You can add global styles to this file, and also import other style files */
+body {
+    min-height: 60vh;
+    display: flex;
+    flex-direction: column;
+    margin: 0px;
+}
+
+footer {
+    margin-top: auto;
+    background-color: #333;
+    color: #fff;
+    padding: 5px;
+    text-align: center;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin: 8px 0;
+    text-align: center;
+}
+
+p {
+    margin: 0;
+}
+
+.spacer {
+    flex: 1;
+}
+
+.toolbar-preview {
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    background-color: #24292e;
+    color: white;
+    font-weight: 600;
+}
+
+.toolbar-preview img {
+    margin: 0 16px;
+    height: 75%;
+    width: 10%;
+}
+
+.toolbar-preview span {
+    font-size: 25px;
+    margin-left: 45px;
+}
+
+.toolbar-preview svg {
+   margin-right: 50px;
+}
+
+.toolbar-preview #twitter-logo:hover,
+.toolbar-preview #youtube-logo:hover {
+    opacity: 0.8;
+}
+
+.btn-container {
+    margin: auto;
+}
+
+.btn-container button {
+    display: block;
+    padding: 10px;
+    margin-top: 20px;
+    border-radius: 5px;
+    border: none;
+    background-color: #007bff;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+}
