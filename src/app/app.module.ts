@@ -10,6 +10,7 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
 import { TemplateGeneraterComponent } from './template-generater/template-generater.component';
 import { PreviewComponent } from './preview/preview.component';
 import { HttpClientModule } from '@angular/common/http';
+import { TemplateListComponent } from './template-list/template-list.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { HttpClientModule } from '@angular/common/http';
     RegistrationComponent,
     ForgotPasswordComponent,
     TemplateGeneraterComponent,
-    PreviewComponent
+    PreviewComponent,
+    TemplateListComponent
   ],
   imports: [
     BrowserModule,

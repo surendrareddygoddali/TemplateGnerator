@@ -1,0 +1,6 @@
+<div *ngFor="let item of cssList">
+    <div class="links">
+        <label for="text-field">{{item.themeName}}</label>
+        <button class="btn" (click)="applyTheme(item)">Preview</button>
+    </div>
+</div>

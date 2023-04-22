@@ -42,7 +42,7 @@ export class LoginComponent {
         this.isAuthSuccess = resp.authorized;
         console.log("isAuthSucces " + this.isAuthSuccess);
         if (this.isAuthSuccess === true) {
-          this.authenticateService.updateUserName(this.name = resp.name);
+          this.authenticateService.updateUserName(resp.name);
           this.router.navigate(['', 'template-generater']);
         } else {
           this.errorMsg = 'Invalid Credentials';

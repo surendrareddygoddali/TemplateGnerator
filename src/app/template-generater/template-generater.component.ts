@@ -13,7 +13,7 @@ class ImageSnippet {
   templateUrl: './template-generater.component.html',
   styleUrls: ['./template-generater.component.css']
 })
-export class TemplateGeneraterComponent{
+export class TemplateGeneraterComponent {
   primaryColor: string = '#814582';
   actionColor: string = '#4fa155';
   pageTitle: string = 'Change your title';
@@ -22,14 +22,21 @@ export class TemplateGeneraterComponent{
   templateName: string = '';
   companyTitle: string = '';
 
-  success: boolean = false;
+  saveSuccess: boolean = false;
   choosenFile!: File;
 
   constructor(private templateService: TemplateService) {
+    this.templateService.templateDetails$.subscribe(value => {
+      this.primaryColor = value.css.primaryColor;
+      this.actionColor = value.css.actionColor;
+      this.companyTitle = value.css.companyTitle;
+      this.templateName = value.themeName;
+      this.pageTitle = value.css.pageTitle;
+      this.imageSrc =  value.css.imageSrc;
+    });
   }
 
-
-  processFile(imageInput: any) {
+  processFile(imageInput: any): void {
     console.log("inside process file" + imageInput)
     const file: File = imageInput.files[0];
     const reader = new FileReader();
@@ -48,8 +55,8 @@ export class TemplateGeneraterComponent{
     
   }
 
-  saveTheme() {
-    this.success = false;
+  saveTheme(): void {
+    this.saveSuccess = false;
     const css = {
       "pageTitle": this.pageTitle,
       "companyTitle": this.companyTitle,
@@ -62,13 +69,15 @@ export class TemplateGeneraterComponent{
       "css": css
     }
 
-    const uploadImageData = new FormData();
-    uploadImageData.append('imageFile', this.choosenFile, this.choosenFile.name);
+    // const uploadImageData = new FormData();
+    // uploadImageData.append('imageFile', this.choosenFile, this.choosenFile.name);
 
     this.templateService.saveTheme(data).subscribe(resp => {
       if(resp.Save) {
-        this.success = true;
+        this.saveSuccess = true;
+        this.templateService.updateTemplateSaved(true);
       }
     });
   }
+
 }
