@@ -38,7 +38,7 @@ describe('TemplateGeneraterComponent', () => {
   });
 
   it('should call saveTheme when saveTheme is called', () => {
-    spyOn(templateService, 'saveTheme').and.returnValue({ subscribe: () => {} } as any);
+    spyOn(templateService, 'saveTheme').and.returnValue({ item: () => {} } as any);
     component.saveTheme();
     expect(templateService.saveTheme).toHaveBeenCalled();
   });

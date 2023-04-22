@@ -22,8 +22,8 @@
         </label>
         <button type="submit" [disabled]="loginForm.invalid">Login</button>
         <div class="links">
-            <a href="#" [routerLink]="['/forgot-password']">Forgot Password?</a>
-            <a href="#" [routerLink]="['/registration']">Create an Account</a>
+            <a href="#" routerLink="/forgot-password" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Forgot Password?</a>
+            <a href="#" routerLink="/registration" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Create an Account</a>
         </div>
     </form>
 </div>

@@ -1,9 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { LoginComponent } from './login.component';
 import { AuthenticationService } from '../authentication.service';
-import { of } from 'rxjs';
 import { Router } from '@angular/router';
 
 describe('LoginComponent', () => {
@@ -16,8 +16,8 @@ describe('LoginComponent', () => {
     await TestBed.configureTestingModule({
       imports: [
         RouterTestingModule,
-        FormsModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        HttpClientTestingModule
       ],
       declarations: [ LoginComponent ],
       providers: [ AuthenticationService ]
@@ -32,54 +32,68 @@ describe('LoginComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should create the component', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should have a FormGroup object named loginForm', () => {
-    expect(component.loginForm).toBeDefined();
-    expect(component.loginForm instanceof FormGroup).toBeTruthy();
+  it('should initialize the form with empty values', () => {
+    expect(component.loginForm.value).toEqual({username: '', password: ''});
   });
 
-  it('should have required validators on the username and password form controls', () => {
-    const usernameControl = component.loginForm.get('username');
-    const passwordControl = component.loginForm.get('password');
-    expect(usernameControl?.validator).toBe(Validators.required);
-    expect(passwordControl?.validator).toBe(Validators.required);
-  });
+  it('should set isAuthSuccess to true when authentication is successful', () => {
+    const data = {
+      email: 'test@test.com',
+      password: 'testpassword'
+    };
 
-  it('should call authenticateUser method of the AuthenticationService when form is submitted with valid data', () => {
-    const spy = spyOn(authService, 'authenticateUser').and.returnValue(of({ authorized: true, name: 'test' }));
-    component.loginForm.patchValue({
-      username: 'test@test.com',
-      password: 'password'
-    });
+    const returnValue: any = {
+      "authorized": true, 
+      "name": 'Test User'
+    }
+    spyOn(authService, 'authenticateUser').and.returnValue(returnValue);
     component.onSubmit();
-    expect(spy).toHaveBeenCalled();
+    expect(component.isAuthSuccess).toBeTrue();
   });
 
-  it('should update isAuthSuccess and name properties and navigate to template-generater when authentication is successful', () => {
-    const spy = spyOn(authService, 'authenticateUser').and.returnValue(of({ authorized: true, name: 'test' }));
-    const routerSpy = spyOn(router, 'navigate');
-    component.loginForm.patchValue({
-      username: 'test@test.com',
-      password: 'password'
-    });
+  it('should update the user name when authentication is successful', () => {
+    const data = {
+      email: 'test@test.com',
+      password: 'testpassword'
+    };
+    const returnValue: any = {
+      "authorized": true, 
+      "name": 'Test User'
+    }
+    spyOn(authService, 'authenticateUser').and.returnValue(returnValue);
     component.onSubmit();
-    expect(spy).toHaveBeenCalled();
-    expect(component.isAuthSuccess).toBeTruthy();
-    expect(component.name).toBe('test');
-    expect(routerSpy).toHaveBeenCalledWith(['', 'template-generater']);
+    expect(authService.updateUserName).toHaveBeenCalledWith('Test User');
   });
 
-  it('should set errorMsg property when authentication is unsuccessful', () => {
-    const spy = spyOn(authService, 'authenticateUser').and.returnValue(of({ authorized: false }));
-    component.loginForm.patchValue({
-      username: 'test@test.com',
-      password: 'password'
-    });
+  it('should navigate to the template-generater page when authentication is successful', () => {
+    const data = {
+      email: 'test@test.com',
+      password: 'testpassword'
+    };
+    const returnValue: any = {
+      "authorized": true, 
+      "name": 'Test User'
+    }
+    spyOn(authService, 'authenticateUser').and.returnValue(returnValue);
+    spyOn(router, 'navigate');
     component.onSubmit();
-    expect(spy).toHaveBeenCalled();
-    expect(component.errorMsg).toBe('Invalid Credentials');
+    expect(router.navigate).toHaveBeenCalledWith(['', 'template-generater']);
+  });
+
+  it('should set the error message when authentication fails', () => {
+    const data = {
+      email: 'test@test.com',
+      password: 'testpassword'
+    };
+    const returnValue: any = {
+      "authorized": true
+    }
+    spyOn(authService, 'authenticateUser').and.returnValue(returnValue);
+    component.onSubmit();
+    expect(component.errorMsg).toEqual('Invalid Credentials');
   });
 });

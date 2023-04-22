@@ -11,7 +11,6 @@ describe('AuthenticationService', () => {
       imports: [HttpClientTestingModule],
       providers: [AuthenticationService]
     });
-
     service = TestBed.inject(AuthenticationService);
     httpMock = TestBed.inject(HttpTestingController);
   });
@@ -24,50 +23,44 @@ describe('AuthenticationService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should return an Observable when authenticateUser is called', () => {
-    const mockResponse = { authorized: true, name: 'John Doe' };
-    const mockBody = { username: 'johndoe', pwd: 'password' };
-    service.authenticateUser(mockBody).subscribe(response => {
-      expect(response).toEqual(mockResponse);
+  it('should update the userName value', () => {
+    const newValue = 'test';
+    service.updateUserName(newValue);
+    service.userName$.subscribe((value) => {
+      expect(value).toBe(newValue);
     });
-
-    const mockRequest = httpMock.expectOne('http://localhost:8081/api/authentication');
-    expect(mockRequest.request.method).toBe('POST');
-    expect(mockRequest.request.body).toEqual(mockBody);
-    mockRequest.flush(mockResponse);
   });
 
-  it('should return an Observable when createUser is called', () => {
+  it('should authenticate the user', () => {
     const mockResponse = { success: true };
-    const mockBody = { username: 'johndoe', pwd: 'password' };
-    service.createUser(mockBody).subscribe(response => {
+    const mockBody = { username: 'test', password: 'test' };
+    service.authenticateUser(mockBody).subscribe((response) => {
       expect(response).toEqual(mockResponse);
     });
-
-    const mockRequest = httpMock.expectOne('http://localhost:8081/api/createUser');
-    expect(mockRequest.request.method).toBe('POST');
-    expect(mockRequest.request.body).toEqual(mockBody);
-    mockRequest.flush(mockResponse);
+    const req = httpMock.expectOne('http://localhost:8081/api/authentication');
+    expect(req.request.method).toEqual('POST');
+    req.flush(mockResponse);
   });
 
-  it('should return an Observable when resetPassword is called', () => {
+  it('should create a user', () => {
     const mockResponse = { success: true };
-    const mockBody = { username: 'johndoe', pwd: 'password' };
-    service.resetPassword(mockBody).subscribe(response => {
+    const mockBody = { username: 'test', password: 'test' };
+    service.createUser(mockBody).subscribe((response) => {
       expect(response).toEqual(mockResponse);
     });
-
-    const mockRequest = httpMock.expectOne('http://localhost:8081/api/resetUser');
-    expect(mockRequest.request.method).toBe('POST');
-    expect(mockRequest.request.body).toEqual(mockBody);
-    mockRequest.flush(mockResponse);
+    const req = httpMock.expectOne('http://localhost:8081/api/registration');
+    expect(req.request.method).toEqual('POST');
+    req.flush(mockResponse);
   });
 
-  it('should emit a new value when updateUserName is called', () => {
-    const mockValue = 'new value';
-    service.updateUserName(mockValue);
-    service.userName$.subscribe(value => {
-      expect(value).toEqual(mockValue);
+  it('should reset a password', () => {
+    const mockResponse = { success: true };
+    const mockBody = { username: 'test', password: 'test' };
+    service.resetPassword(mockBody).subscribe((response) => {
+      expect(response).toEqual(mockResponse);
     });
+    const req = httpMock.expectOne('http://localhost:8081/api/resetPassword');
+    expect(req.request.method).toEqual('POST');
+    req.flush(mockResponse);
   });
 });

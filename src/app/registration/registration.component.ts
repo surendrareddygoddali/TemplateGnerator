@@ -26,6 +26,7 @@ export class RegistrationComponent implements OnInit {
   }
 
   onSubmit() {
+    this.errorMsg = '';
     console.log('User submitted:', this.registrationForm.value);
     // TODO: Send user data to server for registration
     if(this.registrationForm.valid){

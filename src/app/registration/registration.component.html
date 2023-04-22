@@ -6,7 +6,7 @@
                 {{errorMsg}}
             </div>
             <div *ngIf="success" class="success-message">
-                Registration Successful!! <a href="#" [routerLink]="['/login']">Login here</a>
+                Registration Successful!! <a href="#" routerLink="/login" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Login here</a>
             </div>
             <label for="name">Name:</label>
             <input type="text" id="name" formControlName="name">
@@ -42,7 +42,7 @@
             <button type="submit" [disabled]="registrationForm.invalid">Submit</button>
         </form>
         <div class="links">
-            <a href="#" [routerLink]="['/login']">Already a Member?</a>
+            <a href="#" routerLink="/login" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Already a Member?</a>
         </div>
     </div>
 </div>

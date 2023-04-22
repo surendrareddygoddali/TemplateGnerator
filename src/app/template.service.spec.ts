@@ -23,31 +23,45 @@ describe('TemplateService', () => {
     expect(service).toBeTruthy();
   });
 
-  describe('saveTheme', () => {
-    it('should make a POST request to save the theme', () => {
-      const mockTheme = { name: 'Test Theme', colors: ['#000000', '#FFFFFF'] };
-      service.saveTheme(mockTheme).subscribe((response) => {
-        expect(response).toEqual(mockTheme);
-      });
-      const req = httpMock.expectOne('http://localhost:8081/api/saveTheme');
-      expect(req.request.method).toBe('POST');
-      expect(req.request.body).toEqual(mockTheme);
-      req.flush(mockTheme);
+  it('should call saveTheme API', () => {
+    const body = {themeName: 'Test Theme'};
+    service.saveTheme(body).subscribe(res => {
+      expect(res).toBeTruthy();
+    });
+
+    const req = httpMock.expectOne('http://localhost:8081/api/createTheme');
+    expect(req.request.method).toBe('POST');
+    expect(req.request.headers.get('Content-Type')).toBe('application/json');
+    expect(req.request.headers.get('Access-Control-Allow-Origin')).toBe('*');
+    req.flush(body);
+  });
+
+  it('should call getThemes API', () => {
+    const mockResponse = [{"themeName":"1"},{"themeName":"2"}];
+    service.getThemes().subscribe(res => {
+      expect(res).toEqual(mockResponse);
+    });
+
+    const req = httpMock.expectOne('http://localhost:8081/api/getThemes');
+    expect(req.request.method).toBe('GET');
+    expect(req.request.headers.get('Content-Type')).toBeNull();
+    expect(req.request.headers.get('Access-Control-Allow-Origin')).toBeNull();
+    req.flush(mockResponse);
+  });
+
+  it('should update template details', () => {
+    const mockDetails = [{"themeName":"1"},{"themeName":"2"},{"themeName":"3"}];
+    service.updateTemplateDetails(mockDetails);
+    service.templateDetails$.subscribe(res => {
+      expect(res).toEqual(mockDetails);
     });
   });
 
-  describe('getThemes', () => {
-    it('should make a GET request to retrieve themes', () => {
-      const mockThemes = [
-        { name: 'Theme 1', colors: ['#123456', '#abcdef'] },
-        { name: 'Theme 2', colors: ['#789012', '#fedcba'] }
-      ];
-      service.getThemes().subscribe((response) => {
-        expect(response).toEqual(mockThemes);
-      });
-      const req = httpMock.expectOne('http://localhost:8081/api/getThemes');
-      expect(req.request.method).toBe('GET');
-      req.flush(mockThemes);
+  it('should update template saved flag', () => {
+    const mockFlag = false;
+    service.updateTemplateSaved(mockFlag);
+    service.getTemplateSaved$.subscribe(res => {
+      expect(res).toEqual(mockFlag);
     });
   });
 });

@@ -11,6 +11,7 @@ import { TemplateGeneraterComponent } from './template-generater/template-genera
 import { PreviewComponent } from './preview/preview.component';
 import { HttpClientModule } from '@angular/common/http';
 import { TemplateListComponent } from './template-list/template-list.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { TemplateListComponent } from './template-list/template-list.component';
     AppRoutingModule,
     ReactiveFormsModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    RouterModule
   ],
   providers: [],
   bootstrap: [AppComponent]
